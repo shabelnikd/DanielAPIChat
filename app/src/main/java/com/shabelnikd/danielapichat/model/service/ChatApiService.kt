@@ -12,12 +12,12 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ChatApiService {
-    @GET("/chat/{chatId}")
+    @GET("chat/{chatId}")
     suspend fun getChatById(
         @Path("chatId") chatId: Int
     ) : Response<List<MessagesResponse>>
 
-    @POST("/chat/send")
+    @POST("chat/send")
     @FormUrlEncoded
     suspend fun sendMessage(
         @Field("chatId") chatId: Int,
@@ -27,7 +27,7 @@ interface ChatApiService {
     ) : Response<MessagesResponse>
 
 
-    @PUT("/chat/{chatId}/message/{messageId}")
+    @PUT("chat/{chatId}/message/{messageId}")
     @FormUrlEncoded
     suspend fun editMessage(
         @Path("chatId") chatId: Int,
@@ -36,10 +36,10 @@ interface ChatApiService {
     ) : Response<MessagesResponse>
 
 
-    @DELETE("/chat/{chatId}/message/{messageId}")
+    @DELETE("chat/{chatId}/message/{messageId}")
     suspend fun deleteMessage(
         @Path("chatId") chatId: Int,
         @Path("messageId") messageId: Int,
-    ) : Response<Nothing>
+    ) : Response<Unit>
 
 }

@@ -1,6 +1,7 @@
 package com.shabelnikd.danielapichat.view.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -36,7 +37,6 @@ class MessagesAdapter(
         return ViewHolder(binding)
     }
 
-    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int
@@ -49,12 +49,12 @@ class MessagesAdapter(
             when {
                 messageItem.senderId?.toInt() == ME_ID -> {
                     binding.root.gravity = Gravity.END
-                    binding.cardMessage.setCardBackgroundColor(R.color.message_green)
+                    binding.cardMessage.setCardBackgroundColor(Color.parseColor("#144e38"))
                 }
 
                 else -> {
                     binding.root.gravity = Gravity.START
-                    binding.cardMessage.setCardBackgroundColor(R.color.message_gray)
+                    binding.cardMessage.setCardBackgroundColor(Color.parseColor("#20262B"))
 
                 }
             }

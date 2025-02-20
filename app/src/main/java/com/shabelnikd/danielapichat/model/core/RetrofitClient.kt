@@ -1,5 +1,6 @@
 package com.shabelnikd.danielapichat.model.core
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.shabelnikd.danielapichat.model.service.ChatApiService
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -7,10 +8,11 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.component.KoinComponent
 import retrofit2.Retrofit
 import kotlin.getValue
 
-class RetrofitClient() {
+class RetrofitClient(context: Context) : KoinComponent {
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -41,6 +43,6 @@ class RetrofitClient() {
 
 
     companion object {
-        const val BASE_URL = "https://nomadnova.com.kg/api"
+        const val BASE_URL = "https://nomadnova.com.kg/api/"
     }
 }

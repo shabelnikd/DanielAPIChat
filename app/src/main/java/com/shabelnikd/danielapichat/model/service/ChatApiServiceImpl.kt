@@ -36,7 +36,7 @@ class ChatApiServiceImpl(private val apiService: ChatApiService) : KoinComponent
     suspend fun deleteMessage(
         chatId: Int,
         messageId: Int
-    ): Result<Response<Nothing>> =
+    ): Result<Response<Unit>> =
         safeApiCall(
             { apiService.deleteMessage(chatId, messageId) },
             "Error fetching delete message"

@@ -56,6 +56,7 @@ class ChatFragment : Fragment() {
                 .setPositiveButton("OK") { dialog, _ ->
                     val newMessage = editText.text.toString()
                     viewModel.editMessage(chatId, messageId, newMessage)
+                    binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
                 }
                 .setNegativeButton("Отмена", null)
                 .show()
@@ -64,9 +65,10 @@ class ChatFragment : Fragment() {
         messagesAdapter.setOnLongClickListener { chatId, messageId ->
             val builder = AlertDialog.Builder(requireContext())
 
-            builder.setTitle("Изменить сообщение")
+            builder.setTitle("Удалить сообщение")
                 .setPositiveButton("OK") { dialog, _ ->
                     viewModel.deleteMessage(chatId, messageId)
+                    binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
                 }
                 .setNegativeButton("Отмена", null)
                 .show()
@@ -87,6 +89,7 @@ class ChatFragment : Fragment() {
                 when (messages) {
                     is ChatViewModel.MessagesResult.Success -> {
                         messagesAdapter.submitList(messages.messages)
+                        binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
                     }
                     is ChatViewModel.MessagesResult.Error -> {
                         Snackbar.make(binding.root, messages.errorMessage, 2000)
@@ -99,12 +102,14 @@ class ChatFragment : Fragment() {
     private fun setupListeners() {
         binding.btnSendMessage.setOnClickListener {
             viewModel.sendMessage(CHAT_ID, ME_ID, 0, binding.etMessageText.text.toString())
+            binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
+            binding.etMessageText.setText("")
         }
     }
 
 
     companion object {
         const val CHAT_ID = 2101;
-        const val ME_ID = 1837;
+        const val ME_ID = 1838;
     }
 }
