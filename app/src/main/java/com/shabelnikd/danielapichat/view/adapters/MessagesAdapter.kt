@@ -1,13 +1,13 @@
 package com.shabelnikd.danielapichat.view.adapters
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.shabelnikd.danielapichat.R
+import com.bumptech.glide.Glide
 import com.shabelnikd.danielapichat.databinding.ItemChatMessageBinding
 import com.shabelnikd.danielapichat.model.models.MessagesResponse
 import com.shabelnikd.danielapichat.view.fragments.chat.ChatFragment.Companion.ME_ID
@@ -43,7 +43,23 @@ class MessagesAdapter(
     ) {
         val messageItem = getItem(position)
         with(holder) {
-            binding.tvMessageText.text = messageItem.message
+            when {
+                messageItem.message?.trim()?.startsWith("@image") == true -> {
+                    runCatching {
+                        Glide.with(binding.root).load(messageItem.message.replace("@image", "").trim()).into(binding.imageView)
+                    }.onSuccess {
+                        binding.imageView.visibility = View.VISIBLE
+                        binding.tvMessageText.visibility = View.GONE
+                    }
+
+                }
+                else -> {
+                    binding.tvMessageText.visibility = View.VISIBLE
+                    binding.imageView.visibility = View.GONE
+                    binding.tvMessageText.text = messageItem.message
+                }
+            }
+
             binding.tvSendTime.text = formatTimestamp(messageItem.timestamp)
 
             when {

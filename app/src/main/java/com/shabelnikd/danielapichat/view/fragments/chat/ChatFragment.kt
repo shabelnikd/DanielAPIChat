@@ -1,21 +1,21 @@
 package com.shabelnikd.danielapichat.view.fragments.chat
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.shabelnikd.danielapichat.R
 import com.shabelnikd.danielapichat.databinding.FragmentChatBinding
 import com.shabelnikd.danielapichat.view.adapters.MessagesAdapter
 import kotlinx.coroutines.launch
+import kotlin.getValue
 
 class ChatFragment : Fragment() {
 
@@ -25,6 +25,8 @@ class ChatFragment : Fragment() {
     private val viewModel: ChatViewModel by viewModels()
 
     private val messagesAdapter = MessagesAdapter()
+
+    private val args: ChatFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +38,12 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initUI()
-        loadData()
-        updateUI()
+        val chatId = args.chatId
 
-        setupListeners()
+        loadData(chatId)
+        updateUI()
+        setupListeners(chatId)
 
     }
 
@@ -79,8 +81,8 @@ class ChatFragment : Fragment() {
         binding.rvChat.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun loadData() {
-        viewModel.getMessages(CHAT_ID)
+    private fun loadData(chatId: Int) {
+        viewModel.getMessages(chatId)
     }
 
     private fun updateUI() {
@@ -99,17 +101,21 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun setupListeners() {
+    private fun setupListeners(chatId: Int) {
         binding.btnSendMessage.setOnClickListener {
-            viewModel.sendMessage(CHAT_ID, ME_ID, 0, binding.etMessageText.text.toString())
+            viewModel.sendMessage(chatId, ME_ID, 0, binding.etMessageText.text.toString())
             binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
             binding.etMessageText.setText("")
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     companion object {
-        const val CHAT_ID = 2101;
         const val ME_ID = 1838;
     }
 }
