@@ -101,7 +101,8 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun setupListeners(chatId: Int) {
+    private fun setu
+    pListeners(chatId: Int) {
         binding.btnSendMessage.setOnClickListener {
             viewModel.sendMessage(chatId, ME_ID, 0, binding.etMessageText.text.toString())
             binding.rvChat.scrollToPosition(messagesAdapter.currentList.size - 1)
